@@ -35,3 +35,22 @@ With less, there is sometimes where a .less file is made and is referenced in HM
     <link rel="stylesheet/less" type="text/css" href="index.less" />
     <link rel="stylesheet/less" type="text/css" href="../index.less" />
  ```
+    
+# Calling NodeJS Cloud Functions from React
+Frontend:
+```
+const res = await axios.post(
+    "https://us-central1-quantifying-nft-communities.cloudfunctions.net/getFinancials", 
+    { collectionAddress: "0x7de3085b3190b3a787822ee16f23be010f5f8686"}, 
+    { "Content-Type": "application/json" })
+```
+Server
+```
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set('Access-Control-Allow-Origin', '*')
+    res.set('Access-Control-Allow-Credentials', true)
+    res.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
+    res.set('Access-Control-Allow-Headers', 'Content-Type')
+```
+    
+    
