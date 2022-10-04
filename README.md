@@ -54,3 +54,61 @@ Server
 ```
     
     
+## Python Stuff
+Code snippet for days x later (since you failed the interview)
+```
+from datetime import datetime, timedelta
+from pprint import pprint
+
+print("Began...")
+
+values = {
+    "intervals": 4,
+    "time": 30,
+    "fee": 5,
+    "amount": 1000,
+    "date": "2022-10-1"
+}
+
+# From the str of date, return same format x daysLater
+def getDaysLater(currentDateStr, daysLater, dateFormat):
+    dateNow = datetime.strptime(currentDateStr, dateFormat) # Converts to date obj
+    newDate = dateNow + timedelta(days=daysLater) # Creates the new date obj with x daysLater
+    while newDate.weekday() > 4: # If weekend, just keep appending 1 until
+        newDate = newDate + timedelta(days=1)
+    return newDate.strftime(dateFormat) # Return date obj as a str with format from dateFormat
+
+def main(intervals, time, fee, amount, date):
+    
+    # Calculate the Fee for each period and last value
+    totalFee = amount * (fee / 100)
+    intervalFee = 0
+    feeLeftover = 0
+    if (totalFee % intervals == 0):
+        intervalFee = totalFee / intervals
+    else:
+        intervalFee = totalFee // intervals
+        feeLeftover = totalFee - intervalFee * intervals
+    
+    # Calculate the amount paid back at each interval
+    intervalPrinc = amount / intervals
+    
+    ans = []
+    
+    # Get the dates
+    for i in range(0, time+1, int(time/(intervals-1))):
+        ans.append({
+            'currency': 'usd',
+            'amount': intervalPrinc + intervalFee,
+            'date': getDaysLater(date, i, "%Y-%m-%d")
+        })
+        
+    if ans: ans[-1]['amount']+=feeLeftover
+    
+    return ans
+
+
+result = main(values['intervals'], values['time'], values['fee'], values['amount'], values['date'])
+pprint(result)
+print("...finished!")
+```
